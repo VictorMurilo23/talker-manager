@@ -13,21 +13,16 @@ const {
 const getAllTalkers = require('../getAllTalkers');
 const findTalkerById = require('../getTalkerById');
 
-router.post(
-  '/',
-  validateToken,
-  validateTalkerName,
-  validateTalkerAge,
-  validateTalkerTalk,
-  validateTalkerRate,
-  validateTalkerWatched,
-  async (req, res) => {
-    const allTalkers = await getAllTalkers();
-    req.body.id = allTalkers.length + 1;
-    await changeTalkerFile([...allTalkers, req.body]);
-    return res.status(201).json(req.body);
-  },
-);
+router.get('/search', validateToken, async (req, res) => {
+  const { q } = req.query;
+  const allTalkers = await getAllTalkers();
+
+  if (q === undefined || q === '') {
+    return res.status(200).json(allTalkers);
+  }
+  const findTalker = allTalkers.filter((element) => element.name.includes(q));
+  return res.status(200).json(findTalker);
+});
 
 router.get('/', async (_req, res) => {
   const allPeople = await getAllTalkers();
@@ -69,6 +64,22 @@ router.put(
     req.body.id = Number(id);
     changeTalkerFile(newtal);
     return res.status(200).json(req.body);
+  },
+);
+
+router.post(
+  '/',
+  validateToken,
+  validateTalkerName,
+  validateTalkerAge,
+  validateTalkerTalk,
+  validateTalkerRate,
+  validateTalkerWatched,
+  async (req, res) => {
+    const allTalkers = await getAllTalkers();
+    req.body.id = allTalkers.length + 1;
+    await changeTalkerFile([...allTalkers, req.body]);
+    return res.status(201).json(req.body);
   },
 );
 
