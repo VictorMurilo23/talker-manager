@@ -72,4 +72,12 @@ router.put(
   },
 );
 
+router.delete('/:id', validateToken, async (req, res) => {
+  const { id } = req.params;
+  const allTalkers = await getAllTalkers();
+  const filtered = allTalkers.filter((element) => element.id !== Number(id));
+  changeTalkerFile(filtered);
+  res.status(204).send();
+});
+
 module.exports = router;
