@@ -1,4 +1,4 @@
-const getAllPeople = require('./getAllPeople');
+const getAllPeople = require('./getAllTalkers');
 
 const findById = async (id) => {
   const allPeople = await getAllPeople();
