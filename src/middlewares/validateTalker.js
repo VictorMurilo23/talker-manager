@@ -29,21 +29,19 @@ const validateTalkerTalk = (req, res, next) => {
 };
 
 const validateTalkerRate = (req, res, next) => {
-  const { talk } = req.body;
-  const { rate } = talk;
-  if (!rate) {
+  const { talk: { rate } } = req.body;
+  if (rate === undefined) {
     return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
   }
 
-  if (!Number.isInteger(rate) || Number(rate) > 6 || Number(rate) < 1) {
+  if (Number(rate) < 1 || Number(rate) > 5 || !Number.isInteger(rate)) {
     return res.status(400).json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   }
   next();
 };
 
 const validateTalkerWatched = (req, res, next) => {
-  const { talk } = req.body;
-  const { watchedAt } = talk;
+  const { talk: { watchedAt } } = req.body;
   if (!watchedAt) {
     return res.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
   }
