@@ -9,6 +9,7 @@
     "restore": "cp __tests__/seed.json src/talker.json",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js --ignore 'src/talker.json'",
+    "swagger-autogen": "node src/swagger.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."
   },
   "keywords": [],
@@ -18,7 +19,8 @@
     "body-parser": "1.19.0",
     "crypto-js": "4.0.0",
     "express": "4.17.1",
-    "express-rescue": "1.1.30"
+    "express-rescue": "1.1.30",
+    "swagger-ui-express": "^4.6.2"
   },
   "devDependencies": {
     "chai": "4.3.4",
@@ -29,6 +31,7 @@
     "mocha": "8.4.0",
     "nodemon": "2.0.15",
     "nyc": "15.1.0",
-    "sinon": "11.1.1"
+    "sinon": "11.1.1",
+    "swagger-autogen": "^2.23.1"
   }
 }

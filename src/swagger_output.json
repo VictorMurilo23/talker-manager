@@ -1,0 +1,483 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Talker Manager",
+    "description": "Minha primeira API CRUD"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/login/": {
+      "post": {
+        "tags": ["Login"],
+        "summary": "Fazer login",
+        "description": "Colocar um email válido e uma senha com pelo menos 6 caracteres.\n Será retornado um token necessário para outras requisições",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "required": true,
+                  "example": "email@gmail.com"
+                },
+                "password": {
+                  "example": "23441413"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "example": "41728550f11e1edc"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "O campo 'email' é obrigatório"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talker/search": {
+      "get": {
+        "tags": ["Palestrantes"],
+        "summary": "Filtrar palestrantes por nome",
+        "description": "Retorna os palestrantes filtrados por nomes que incluem a string da query",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Nome a ser utilizado na busca",
+            "type": "string"
+
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "description": "Token generado na rota login",
+            "example": "41728550f11e1edc",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK. Retorna os palestrantes.",
+            "schema": {
+              "type": "array",
+              "example": [
+                {
+                  "name": "Romon",
+                  "age": 65,
+                  "id": 1,
+                  "talk": {
+                    "watchedAt": "23/10/2020",
+                    "rate": 5
+                  }
+                },
+                {
+                  "name": "Roberto",
+                  "age": 54,
+                  "id": 4,
+                  "talk": {
+                    "watchedAt": "13/05/2021",
+                    "rate": 8
+                  }
+                }
+              ]
+            }
+          },
+          "401": {
+            "description": "Bad request. Deve se passar um token válido",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "example": "O campo 'email' é obrigatório"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talker/": {
+      "get": {
+        "tags": ["Palestrantes"],
+        "summary": "Acha todos os palestrantes",
+        "description": "Retorna todos os palestrantes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "example": [
+                {
+                  "name": "Rafael",
+                  "age": 23,
+                  "id": 1,
+                  "talk": {
+                    "watchedAt": "23/03/2020",
+                    "rate": 2
+                  }
+                },
+                {
+                  "name": "Matheus",
+                  "age": 70,
+                  "id": 2,
+                  "talk": {
+                    "watchedAt": "26/05/2021",
+                    "rate": 8
+                  }
+                },
+                {
+                  "name": "Rodrigo",
+                  "age": 45,
+                  "id": 3,
+                  "talk": {
+                    "watchedAt": "07/07/2019",
+                    "rate": 10
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Cria um palestrante",
+        "tags": ["Palestrantes"],
+        "summary": "Cria palestrante",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Token generado no Login",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Informações do palestrante",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "José da Silva",
+                  "type": "string"
+                },
+                "age": {
+                  "example": 59,
+                  "type": "integer"
+                },
+                "talk": {
+                  "type": "object",
+                  "properties": {
+                    "rate": {
+                      "example": 2,
+                      "type": "integer"
+                    },
+                    "watchedAt": {
+                      "example": "12/04/2020",
+                      "type": "dd/mm/yy"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created. Criado com sucesso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "José da Silva",
+                  "type": "string"
+                },
+                "id": {
+                  "example": 9,
+                  "type": "integer"
+                },
+                "age": {
+                  "example": 59,
+                  "type": "integer"
+                },
+                "talk": {
+                  "type": "object",
+                  "properties": {
+                    "rate": {
+                      "example": 2,
+                      "type": "integer"
+                    },
+                    "watchedAt": {
+                      "example": "12/04/2020",
+                      "type": "dd/mm/yy"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Body com informações inválidas",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "example": "O campo 'talk' é obrigatório"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Token inválido",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "example": "Token inválido"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talker/{id}": {
+      "get": {
+        "tags": ["Palestrantes"],
+        "summary": "Busca por id",
+        "description": "Procura um palestrante por id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK. Retorna o palestrante.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "José da Silva",
+                  "type": "string"
+                },
+                "id": {
+                  "example": 9,
+                  "type": "integer"
+                },
+                "age": {
+                  "example": 59,
+                  "type": "integer"
+                },
+                "talk": {
+                  "type": "object",
+                  "properties": {
+                    "rate": {
+                      "example": 2,
+                      "type": "integer"
+                    },
+                    "watchedAt": {
+                      "example": "12/04/2020",
+                      "type": "dd/mm/yy"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. Palestrante não encontrado",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "example": "Pessoa palestrante não encontrada"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Palestrantes"],
+        "summary": "Atualiza palestrante",
+        "description": "Atualiza os dados de um palestrante",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Token gerado no login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Novas informações",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "José da Silva",
+                  "type": "string"
+                },
+                "age": {
+                  "example": 59,
+                  "type": "integer"
+                },
+                "talk": {
+                  "type": "object",
+                  "properties": {
+                    "rate": {
+                      "example": 2,
+                      "type": "integer"
+                    },
+                    "watchedAt": {
+                      "example": "12/04/2020",
+                      "type": "dd/mm/yy"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK. Atualizado com sucesso.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "José da Silva",
+                  "type": "string"
+                },
+                "id": {
+                  "example": 9,
+                  "type": "integer"
+                },
+                "age": {
+                  "example": 59,
+                  "type": "integer"
+                },
+                "talk": {
+                  "type": "object",
+                  "properties": {
+                    "rate": {
+                      "example": 2,
+                      "type": "integer"
+                    },
+                    "watchedAt": {
+                      "example": "12/04/2020",
+                      "type": "dd/mm/yy"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request. Body com informações inválida",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "example": "O campo 'name' é obrigatório"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Token inválido",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "example": "Token inválido"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deleta um palestrante por id",
+        "tags": ["Palestrantes"],
+        "summary": "Deleta um palestrante",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id do palestrante",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "authorization",
+            "description": "Token gerado no login",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content. Deletado com sucesso"
+          },
+          "401": {
+            "description": "Unauthorized. Token inválido",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "example": "Token inválido"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
